@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 
 const courseSchema = new mongoose.Schema({
   courseName: { type: String, required: true },
+
   courseDescription: { type: String },
+
   instructor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
