@@ -1,6 +1,7 @@
 const cloudinary = require("cloudinary").v2;
 
-exports.uploadImageToCloudinary = async (file, folder, height, quality) => {
+//file in params below could be image/video
+exports.uploadFileToCloudinary = async (file, folder, height, quality) => {
   const options = { folder };
   //for compression
   if (height) {
