@@ -79,11 +79,13 @@ exports.categoryPageDetails = async (req, res) => {
 
     const selectedCourses = selectedCategory.courses;
 
-    // Get courses for other categories
+    // Get courses for different categories
     const categoriesExceptSelected = await Category.find({
       _id: { $ne: categoryId },
     }).populate("courses");
+
     let differentCourses = [];
+
     for (const category of categoriesExceptSelected) {
       differentCourses.push(...category.courses);
     }
