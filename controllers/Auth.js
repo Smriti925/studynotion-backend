@@ -4,6 +4,8 @@ const Profile = require("../models/Profile");
 const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const mailSender = require("../utils/mailSender");
+const { passwordUpdated } = require("../mail/templates/passwordUpdate");
 require("dotenv").config();
 
 //sendotp -> otp create and add it to db
@@ -28,21 +30,21 @@ exports.sendotp = async (req, res) => {
       upperCaseAlphabets: false,
       specialChars: false,
     });
-    console.log("OTP generated: ", otp);
 
     //generate a unique otp
     let resultantOTP = await OTP.findOne({ otp: otp });
+    console.log("OTP generated: ", otp);
 
     while (resultantOTP) {
-      otpGenerator.generate(6, {
+      otp = otpGenerator.generate(6, {
         lowerCaseAlphabets: false,
         upperCaseAlphabets: false,
         specialChars: false,
       });
-
-      resultantOTP = await OTP.findOne({ otp: otp });
     }
-
+    const otpPayload = { email, otp };
+    const otpBody = await OTP.create(otpPayload);
+    console.log("OTP Body", otpBody);
     //response success
     res.status(200).json({
       success: true,
