@@ -1,13 +1,14 @@
 const Profile = require("../models/Profile");
 const User = require("../models/User");
+const { uploadImageToCloudinary } = require("../utils/fileUploader");
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { gender, contactNumber, dateOfBirth = "", about = "" } = req.body;
+    const { gender = "", contactNumber, dateOfBirth, about = "" } = req.body;
 
     //get userId
     const id = req.user.id;
-    if (!contactNumber || !gender || !id) {
+    if (!contactNumber || !dateOfBirth) {
       return res.status(400).json({
         success: false,
         message: "All files required",
@@ -16,20 +17,20 @@ exports.updateProfile = async (req, res) => {
 
     //find profile
     const userDetails = await User.findById(id);
-    const profileId = userDetails.additionalDetails;
-    const profileDetails = await Profile.findById(profileId);
+    const profile = await Profile.findById(userDetails.additionalDetails);
 
     //update profile using save()
-    profileDetails.dateOfBirth = dateOfBirth;
-    profileDetails.about = about;
-    profileDetails.gender = gender;
-    profileDetails.contactNumber = contactNumber;
-    await profileDetails.save();
+    profile.dateOfBirth = dateOfBirth;
+    profile.about = about;
+    profile.gender = gender;
+    profile.contactNumber = contactNumber;
+
+    await profile.save();
 
     return res.status(200).json({
       success: true,
       message: "Profile updated successfully",
-      updatedCourseDetails,
+      profile,
     });
   } catch (error) {
     console.log(error);
@@ -87,7 +88,7 @@ exports.getAllUserDetails = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "All users feteched successfully",
-      error: error.message,
+      data: userDetails,
     });
   } catch (error) {
     console.log(error);

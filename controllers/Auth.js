@@ -101,7 +101,7 @@ exports.signup = async (req, res) => {
     const checkUserExist = await User.findOne({ email });
 
     if (checkUserExist) {
-      return res.response(401).json({
+      return res.status(401).json({
         success: false,
         message: "User already have an account",
       });
@@ -116,13 +116,13 @@ exports.signup = async (req, res) => {
     //validate otp
     if (recentOTP.length == 0) {
       //otp not found
-      return res.response(401).json({
+      return res.status(400).json({
         success: false,
         message: "OTP not found",
       });
-    } else if (otp !== recentOTP.otp) {
+    } else if (otp !== recentOTP[0].otp) {
       //invalid otp, verification failed
-      return res.response(401).json({
+      return res.status(401).json({
         success: false,
         message: "Invalid OTP",
       });
@@ -130,6 +130,10 @@ exports.signup = async (req, res) => {
 
     //hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    //create user
+    let approved = "";
+    approved === "Instructor" ? (approved = false) : (approved = true);
 
     //create entry in db
     const profileDetails = await Profile.create({
@@ -143,16 +147,18 @@ exports.signup = async (req, res) => {
       firstName,
       lastName,
       email,
-      password: hashedPassword,
-      accountType,
       contactNumber,
+      password: hashedPassword,
+      accountType: accountType,
+      approved: approved,
       additionalDetails: profileDetails._id,
-      image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName}${lastName}`,
+      image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
     });
+
     res.status(200).json({
       success: true,
+      user,
       message: "User created successfully",
-      otp,
     });
   } catch (error) {
     console.log(error);

@@ -3,10 +3,10 @@ const router = express.Router();
 const { auth } = require("../middlewares/auth");
 const {
   deleteAccount,
-  updateProfile,
-  getAllUserDetails,
-  updateDisplayPicture,
   getEnrolledCourses,
+  getAllUserDetails,
+  updateProfile, //additionalDetails
+  updateDisplayPicture,
 } = require("../controllers/Profile");
 
 // Profile routes
