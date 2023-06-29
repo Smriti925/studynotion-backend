@@ -93,7 +93,7 @@ exports.updateSubSection = async (req, res) => {
   }
 };
 
-exports.deleteSection = async (req, res) => {
+exports.deleteSubSection = async (req, res) => {
   try {
     //assuming we are sending Id in params
     const { sectionId } = req.params;

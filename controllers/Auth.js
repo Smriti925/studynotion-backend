@@ -8,7 +8,7 @@ require("dotenv").config();
 
 //sendotp -> otp create and add it to db
 
-exports.sendOTP = async (req, res) => {
+exports.sendotp = async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -59,7 +59,7 @@ exports.sendOTP = async (req, res) => {
 };
 
 //signup
-exports.signUp = async (req, res) => {
+exports.signup = async (req, res) => {
   try {
     const {
       firstName,
@@ -163,7 +163,7 @@ exports.signUp = async (req, res) => {
 
 //login
 
-exports.logIn = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 

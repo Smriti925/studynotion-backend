@@ -1,7 +1,7 @@
 const Course = require("../models/Course");
 const Category = require("../models/Category");
 const User = require("../models/User");
-const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { uploadImageToCloudinary } = require("../utils/fileUploader");
 require("dotenv").config();
 
 // Function to create a new course
@@ -188,7 +188,7 @@ exports.getCourseDetails = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       success: false,
-      message: `Can't Fetch getCourseDetails`,
+      message: `Can't Fetch getCourseDetails `,
       error: error.message,
     });
   }
