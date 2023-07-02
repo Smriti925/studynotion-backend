@@ -1,7 +1,7 @@
 const Course = require("../models/Course");
 const Category = require("../models/Category");
 const User = require("../models/User");
-const { uploadImageToCloudinary } = require("../utils/fileUploader");
+const { uploadFileToCloudinary } = require("../utils/fileUploader");
 require("dotenv").config();
 
 // Function to create a new course
@@ -64,7 +64,7 @@ exports.createCourse = async (req, res) => {
       });
     }
     // Upload the Thumbnail to Cloudinary
-    const thumbnailImage = await uploadImageToCloudinary(
+    const thumbnailImage = await uploadFileToCloudinary(
       thumbnail,
       process.env.FOLDER_NAME
     );
@@ -151,7 +151,7 @@ exports.getAllCourses = async (req, res) => {
   }
 };
 
-//getCourseDetails
+//getCourseDetails - single
 exports.getCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body;
@@ -162,7 +162,7 @@ exports.getCourseDetails = async (req, res) => {
         populate: { path: "additionalDetails" },
       })
       .populate("category")
-      .populate("ratingAndReviews")
+      // .populate("ratingAndReviews")
       .populate({
         path: "courseContent",
         populate: {
@@ -182,13 +182,13 @@ exports.getCourseDetails = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: `Course details fetched successfully`,
-      error: error.message,
+      data: courseDetails,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       success: false,
-      message: `Can't Fetch getCourseDetails `,
+      message: `Can't Fetch single course `,
       error: error.message,
     });
   }

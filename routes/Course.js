@@ -11,8 +11,8 @@ const {
 
 // Categories Controllers Import
 const {
-  showAllCategories,
   createCategory,
+  showAllCategories,
   categoryPageDetails,
 } = require("../controllers/Category");
 
@@ -46,22 +46,24 @@ const {
 
 // Courses can Only be Created by Instructors
 router.post("/createCourse", auth, isInstructor, createCourse);
+// Get all Registered Courses
+router.get("/getAllCourses", getAllCourses);
+// Get Details for a Specific Courses
+router.post("/getCourseDetails", getCourseDetails);
+
 //Add a Section to a Course
 router.post("/addSection", auth, isInstructor, createSection);
 // Update a Section
 router.post("/updateSection", auth, isInstructor, updateSection);
 // Delete a Section
 router.post("/deleteSection", auth, isInstructor, deleteSection);
+
+// Add a Sub Section to a Section
+router.post("/addSubSection", auth, isInstructor, createSubSection);
 // Edit Sub Section
 router.post("/updateSubSection", auth, isInstructor, updateSubSection);
 // Delete Sub Section
 router.post("/deleteSubSection", auth, isInstructor, deleteSubSection);
-// Add a Sub Section to a Section
-router.post("/addSubSection", auth, isInstructor, createSubSection);
-// Get all Registered Courses
-router.get("/getAllCourses", getAllCourses);
-// Get Details for a Specific Courses
-router.post("/getCourseDetails", getCourseDetails);
 
 //  Category routes (Only by Admin)
 

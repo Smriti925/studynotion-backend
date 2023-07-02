@@ -25,7 +25,7 @@ exports.createSection = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Section created successfully",
-      updatedCourseDetails,
+      data: updatedCourseDetails,
     });
   } catch (error) {
     console.log(error);
@@ -71,8 +71,8 @@ exports.updateSection = async (req, res) => {
 
 exports.deleteSection = async (req, res) => {
   try {
-    //assuming we are sending Id in params
-    const { sectionId } = req.params;
+    //assuming we are sending Id in body/params
+    const { sectionId } = req.body;
 
     await Section.findByIdAndDelete(sectionId);
 
@@ -80,7 +80,6 @@ exports.deleteSection = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Section deleted successfully",
-      updatedCourseDetails,
     });
   } catch (error) {
     console.log(error);
